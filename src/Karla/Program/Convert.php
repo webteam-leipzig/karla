@@ -149,9 +149,12 @@ class Convert extends ImageMagick implements Program
      * Execute the command
      *
      * @see ImageMagick::execute()
+     *
+     * @param bool $reset
+     *
      * @return string
      */
-    public function execute()
+    public function execute($reset = true)
     {
         if ($this->cache instanceof Cache) {
             ! is_array($this->getQuery()->getInputOptions()) ? $this->getQuery()->setInputOption("") : null;
@@ -171,7 +174,7 @@ class Convert extends ImageMagick implements Program
             return $this->cache->getCached($this->inputFile, $this->outputFile, $this->getQuery()->getInputOptions());
         } else {
             $temp = str_replace('"', '', $this->outputFile);
-            parent::execute();
+            parent::execute($reset);
             shell_exec('chmod 666 ' . $temp);
             return $this->outputFile;
         }
